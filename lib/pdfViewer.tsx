@@ -1,14 +1,12 @@
 import { useEffect } from "react";
-import * as pdfjsLib from "pdfjs-dist";
-
-console.log(pdfjsLib);
+// pdf.worker.jsimport * as pdfjsLib from "pdfjs-dist";
 
 const RxPdfViewer = () => {
   useEffect(() => {
-    (async function () {
-      // const pdfjsLib = await import("pdfjs-dist");
-      console.log(pdfjsLib);
-    })();
+    // (async function () {
+    //   pdfjsLib.GlobalWorkerOptions.workerSrc = window.location.origin + "/pdf.worker.min.mjs";
+    //   console.log(pdfjsLib);
+    // })();
   }, []);
 
   return <div>Pdf Viewer</div>;
