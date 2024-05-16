@@ -33,7 +33,6 @@
     "vite-plugin-dts": "^3.9.1"
   },
   "dependencies": {
-    "pdf-dist": "^1.0.0",
-    "pdfjs-dist": "^4.2.67"
+    "pdfjs-dist": "^3.11.174"
   }
 }
