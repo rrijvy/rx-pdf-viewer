@@ -2,6 +2,7 @@
   "name": "rx-pdf-viewer",
   "version": "1.0.5",
   "description": "A react pdf viewer",
+  "type": "module",
   "scripts": {
     "build": "rollup -c"
   },
