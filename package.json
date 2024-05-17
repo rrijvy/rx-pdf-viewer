@@ -1,6 +1,6 @@
 {
   "name": "rx-pdf-viewer",
-  "version": "1.0.5",
+  "version": "1.0.9",
   "description": "A react pdf viewer",
   "type": "module",
   "scripts": {
@@ -17,10 +17,12 @@
   },
   "homepage": "https://github.com/rrijvy/rx-pdf-viewer#readme",
   "dependencies": {
+    "pdfjs-dist": "^4.2.67",
     "react": "^18.3.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/react": "^18.3.2",
