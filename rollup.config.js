@@ -3,6 +3,7 @@ import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import json from "@rollup/plugin-json";
+import ignore from "rollup-plugin-ignore";
 
 import packageJson from "./package.json" assert { type: "json" };
 
@@ -21,11 +22,24 @@ export default [
         sourcemap: true,
       },
     ],
-    plugins: [resolve(), commonjs(), json(), typescript({ tsconfig: "./tsconfig.json" })],
+    plugins: [
+      resolve({
+        extensions: [".mjs", ".js", ".json", ".node", ".ts"],
+        preferBuiltins: true,
+        browser: true,
+      }),
+      commonjs({
+        include: /node_modules/,
+        extensions: [".js", ".cjs"],
+      }),
+      json(),
+      typescript({ tsconfig: "./tsconfig.json" }),
+      ignore(["**/*.node"]),
+    ],
   },
   {
     input: "dist/esm/types/index.d.ts",
-    output: [{ file: "dist/index.d.ts", format: "esm" }],
+    output: [{ dir: "dist/index.d.ts", format: "esm" }],
     plugins: [dts()],
   },
 ];

@@ -1,20 +1,22 @@
 {
   "compilerOptions": {
     "target": "ES5",
+    "lib": ["ES2015", "DOM"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
 
     "jsx": "react-jsx",
-    "module": "ESNext",
+    "module": "NodeNext",
     "declaration": true,
     "declarationDir": "types",
     "sourceMap": true,
     "outDir": "dist",
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     "allowSyntheticDefaultImports": true,
     "emitDeclarationOnly": true,
     "rootDir": "src"
-  }
+  },
+  "exclude": ["dist"]
 }

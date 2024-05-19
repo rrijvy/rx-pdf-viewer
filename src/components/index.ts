@@ -1,1 +1,1 @@
-export * as PdfViewer from "./pdfViewer";
+export * as PdfViewer from "./pdfViewer.js";

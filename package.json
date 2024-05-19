@@ -28,6 +28,8 @@
     "@types/react": "^18.3.2",
     "rollup": "^4.17.2",
     "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-ignore": "^1.0.10",
+    "tslib": "^2.6.2",
     "typescript": "^5.4.5"
   },
   "main": "dist/cjs/index.js",
