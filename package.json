@@ -1,12 +1,19 @@
 {
   "name": "rx-pdf-viewer",
-  "version": "1.0.4",
+  "version": "1.0.11",
   "type": "module",
-  "main": "dist/rx-pdf-viewer.js",
-  "types": "dist/main.d.js",
   "files": [
     "dist"
   ],
+  "main": "./dist/rx-pdf-viewer.umd.cjs",
+  "module": "./dist/rx-pdf-viewer.js",
+  "types": "./dist/main.d.js",
+  "exports": {
+    ".": {
+      "import": "./dist/rx-pdf-viewer.js",
+      "require": "./dist/rx-pdf-viewer.umd.cjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rrijvy/rx-pdf-viewer.git"
@@ -17,11 +24,12 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "dev": "vite",
     "prebuild": "npm run clean",
-    "build": "tsc && vite build",
+    "build": "tsc --p ./tsconfig-build.json && vite build",
+    "dev": "vite",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -43,5 +51,8 @@
   },
   "dependencies": {
     "pdfjs-dist": "^3.11.174"
-  }
+  },
+  "sideEffects": [
+    "**/*.css"
+  ]
 }

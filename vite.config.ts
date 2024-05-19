@@ -9,10 +9,16 @@ export default defineConfig({
     copyPublicDir: false,
     lib: {
       entry: path.resolve(__dirname, "lib/main.ts"),
-      formats: ["es"],
+      name: "rx=pdf-viewer",
     },
     rollupOptions: {
       external: ["react", "react/jsx-runtime", "react-dom"],
+      output: {
+        globals: {
+          react: "react",
+          "react/jsx-runtime": "react/jsx-runtime",
+        },
+      },
     },
   },
 });
