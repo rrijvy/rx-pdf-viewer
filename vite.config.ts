@@ -9,7 +9,7 @@ export default defineConfig({
     copyPublicDir: true,
     lib: {
       entry: path.resolve(__dirname, "lib/main.ts"),
-      name: "rx=pdf-viewer",
+      name: "rx-pdf-viewer",
       fileName: (format) => `rx-pdf-viewer.${format}.js`,
     },
     rollupOptions: {
