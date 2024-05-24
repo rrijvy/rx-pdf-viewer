@@ -44,6 +44,7 @@
     "@babel/preset-typescript": "^7.21.4",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-terser": "^0.4.0",
     "@rollup/plugin-typescript": "^11.1.0",
     "@testing-library/react": "^14.0.0",
@@ -68,5 +69,8 @@
     "sass": "^1.61.0",
     "tslib": "^2.5.0",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "pdfjs-dist": "^4.2.67"
   }
 }

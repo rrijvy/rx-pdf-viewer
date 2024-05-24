@@ -1,4 +1,3 @@
-// rollup.config.js
 import terser from "@rollup/plugin-terser";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
@@ -6,6 +5,7 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import postcss from "rollup-plugin-postcss";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import replace from "@rollup/plugin-replace";
 
 import pkg from "./package.json" assert { type: "json" };
 
@@ -24,7 +24,18 @@ export default [
         sourcemap: true,
       },
     ],
-    plugins: [peerDepsExternal(), resolve(), commonjs(), typescript({ tsconfig: "./tsconfig.json" }), postcss(), terser()],
+    plugins: [
+      peerDepsExternal(),
+      resolve(),
+      commonjs(),
+      typescript({ tsconfig: "./tsconfig.json" }),
+      postcss(),
+      terser(),
+      replace({
+        "process.env.NODE_ENV": JSON.stringify("production"),
+        preventAssignment: true,
+      }),
+    ],
   },
   {
     input: "dist/esm/types/index.d.ts",
