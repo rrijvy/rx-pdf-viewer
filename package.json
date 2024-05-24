@@ -3,10 +3,16 @@
   "version": "1.0.9",
   "description": "A react pdf viewer",
   "type": "module",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "clean": "rimraf dist",
     "copy": "node cp.js",
-    "prebuild": "npm run clean && npm run copy",
+    "prebuild": "npm run clean",
     "build": "rollup -c",
     "prepublishOnly": "npm run build"
   },
@@ -21,25 +27,24 @@
   },
   "homepage": "https://github.com/rrijvy/rx-pdf-viewer#readme",
   "dependencies": {
-    "pdfjs-dist": "^3.11.174",
+    "pdfjs-dist": "^3.11.174"
+  },
+  "peerDependencies": {
     "react": "^18.3.1"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.24.1",
     "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/react": "^18.3.2",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^9.1.3",
     "rollup": "^4.17.2",
     "rollup-plugin-dts": "^6.1.0",
-    "rollup-plugin-ignore": "^1.0.10",
-    "tslib": "^2.6.2",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
     "typescript": "^5.4.5"
-  },
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "files": [
-    "dist"
-  ],
-  "types": "dist/index.d.ts"
+  }
 }

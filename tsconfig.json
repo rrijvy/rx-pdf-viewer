@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "target": "ES5",
-    "lib": ["ES2015", "DOM"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

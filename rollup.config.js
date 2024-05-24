@@ -2,8 +2,9 @@ import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
-import json from "@rollup/plugin-json";
-import ignore from "rollup-plugin-ignore";
+import postcss from "rollup-plugin-postcss";
+import terser from "@rollup/plugin-terser";
+import babel from "@rollup/plugin-babel";
 
 import packageJson from "./package.json" assert { type: "json" };
 
@@ -23,23 +24,23 @@ export default [
       },
     ],
     plugins: [
-      resolve({
-        extensions: [".mjs", ".js", ".json", ".node", ".ts"],
-        preferBuiltins: true,
-        browser: true,
+      resolve(),
+      commonjs(),
+      babel({
+        babelHelpers: "bundled",
+        exclude: "node_modules/**",
+        presets: [["@babel/preset-react", { runtime: "automatic" }]],
+        extensions: [".js", ".jsx"],
       }),
-      commonjs({
-        include: /node_modules/,
-        extensions: [".js", ".cjs"],
-      }),
-      json(),
       typescript({ tsconfig: "./tsconfig.json" }),
-      ignore(["**/*.node"]),
+      postcss(),
+      terser(),
     ],
   },
   {
     input: "dist/esm/types/index.d.ts",
-    output: [{ dir: "dist/index.d.ts", format: "esm" }],
+    output: [{ file: "dist/index.d.ts", format: "esm" }],
     plugins: [dts()],
+    external: [/\.(css|less|scss)$/],
   },
 ];
