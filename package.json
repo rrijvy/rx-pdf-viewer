@@ -16,8 +16,6 @@
     "build": "rollup -c",
     "prepublishOnly": "npm run build"
   },
-  "author": "rrijvy",
-  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rrijvy/rx-pdf-viewer.git"
