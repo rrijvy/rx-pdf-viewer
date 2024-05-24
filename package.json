@@ -4,7 +4,11 @@
   "description": "A react pdf viewer",
   "type": "module",
   "scripts": {
-    "build": "rollup -c"
+    "clean": "rimraf dist",
+    "copy": "node cp.js",
+    "prebuild": "npm run clean && npm run copy",
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build"
   },
   "author": "rrijvy",
   "license": "ISC",
@@ -17,7 +21,7 @@
   },
   "homepage": "https://github.com/rrijvy/rx-pdf-viewer#readme",
   "dependencies": {
-    "pdfjs-dist": "^4.2.67",
+    "pdfjs-dist": "^3.11.174",
     "react": "^18.3.1"
   },
   "devDependencies": {

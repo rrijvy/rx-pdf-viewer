@@ -3,7 +3,9 @@ import { useEffect } from "react";
 
 const PdfViewer = () => {
   useEffect(() => {
-    console.log(getDocument);
+    (function () {
+      console.log(getDocument);
+    })();
   }, []);
   return <div className="rx-pdf-viewer">Pdf Viewer</div>;
 };
