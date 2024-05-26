@@ -1,66 +1,24 @@
 {
-  "name": "rx-pdf-viewer",
-  "version": "1.0.22",
+  "name": "demo-library",
+  "version": "1.0.0",
+  "description": "",
   "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/rx-pdf-viewer.umd.cjs",
-  "module": "./dist/rx-pdf-viewer.es.js",
-  "types": "./dist/types/main.d.js",
-  "exports": {
-    ".": {
-      "import": "./dist/rx-pdf-viewer.es.js",
-      "require": "./dist/rx-pdf-viewer.umd.cjs",
-      "types": "./dist/types/main.d.ts"
-    }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rrijvy/rx-pdf-viewer.git"
-  },
-  "homepage": "https://github.com/rrijvy/rx-pdf-viewer#readme",
-  "bugs": {
-    "url": "https://github.com/rrijvy/rx-pdf-viewer/issues"
-  },
-  "keywords": [
-    "pdf",
-    "pdf-viewer",
-    "react"
-  ],
+  "main": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
   "scripts": {
     "clean": "rimraf dist",
-    "copy": "node cp.js",
-    "prebuild": "npm run clean && npm run copy",
-    "build": "tsc --p ./tsconfig-build.json && vite build",
-    "dev": "npm run copy && vite",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "prepublishOnly": "npm run build"
+    "tsc": "npm run clean && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.12.12",
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
-    "@typescript-eslint/eslint-plugin": "^7.2.0",
-    "@typescript-eslint/parser": "^7.2.0",
-    "@vitejs/plugin-react": "^4.2.1",
-    "eslint": "^8.57.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.6",
-    "typescript": "^5.2.2",
-    "vite": "^5.2.0",
-    "vite-plugin-dts": "^3.9.1",
-    "vite-plugin-static-copy": "^1.0.5"
+    "@types/react": "^18.3.3",
+    "typescript": "^5.4.5"
   },
-  "sideEffects": [
-    "**/*.css"
-  ],
   "dependencies": {
-    "pdfjs-dist": "^4.2.67"
+    "pdfjs-dist": "^3.11.174",
+    "react": "^18.3.1"
   }
 }
