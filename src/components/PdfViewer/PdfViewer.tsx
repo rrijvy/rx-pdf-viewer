@@ -1,11 +1,18 @@
-import React, { useEffect } from "react";
-import pdfjsLib from "pdfjs-dist";
-import 'pdfjs-dist/web/pdf_viewer.css';
+import { getDocument, GlobalWorkerOptions, PDFDocumentProxy } from "pdfjs-dist";
+import React, { useEffect, useRef } from "react";
 
-const PdfViewer = () => {
+type PdfViewerProps = {
+  workerSrc: string;
+};
+
+const PdfViewer: React.FC<PdfViewerProps> = (props: PdfViewerProps) => {
+  GlobalWorkerOptions.workerSrc = props.workerSrc;
+  const pdfRef = useRef<PDFDocumentProxy>();
+
   useEffect(() => {
-    console.log("::: Pdf Viewer");
-    console.log(pdfjsLib);
+    const pdfUrl = "https://p1stonimage.s3.amazonaws.com/ManualImportTemplate/dev/Baula+Ke+Banailo+Re+By+Humayun+Ahmed.pdf";
+    getDocument(pdfUrl);
+    console.log("::: Pdf Viewer", pdfRef.current);
   }, []);
 
   return <div>Pdf Viewer</div>;
