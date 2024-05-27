@@ -6,7 +6,7 @@ type PdfViewerProps = {
 };
 
 const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
-  console.log(pdfjsLib);
+  console.log(pdfjsLib.version);
   return (
     <div className="pdf-viewer">
       <p>Pdf Viewer</p>

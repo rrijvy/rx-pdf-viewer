@@ -1,11 +1,17 @@
 {
   "name": "rx-pdf-viewer",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "clean": "rimraf dist",
     "dev": "vitest",
     "test": "vitest run",
-    "build": "tsup ./src/index.ts --format cjs,esm --dts",
+    "build": "npm run clean && tsup ./src/index.ts --format cjs,esm --dts",
     "lint": "tsc"
   },
   "repository": {
