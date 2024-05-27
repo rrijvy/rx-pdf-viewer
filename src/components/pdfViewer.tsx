@@ -1,4 +1,4 @@
-import * as pdfjsLib from "pdfjs-dist";
+import pdfjsLib from "../pdf";
 import { FC } from "react";
 
 type PdfViewerProps = {
