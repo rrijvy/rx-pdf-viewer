@@ -3,20 +3,31 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vitest",
+    "test": "vitest run",
+    "build": "tsup ./src/index.ts --format cjs,esm --dts",
+    "lint": "tsc"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/rrijvy/rx-pdf-viewer.git"
   },
-  "keywords": [
-    "rrijvy"
-  ],
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/rrijvy/rx-pdf-viewer/issues"
   },
   "homepage": "https://github.com/rrijvy/rx-pdf-viewer#readme",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "@types/react": "^18.3.3",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "dependencies": {
+    "pdfjs-dist": "^4.2.67",
+    "react": "^18.3.1"
+  }
 }
