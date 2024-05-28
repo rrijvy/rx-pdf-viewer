@@ -2,7 +2,6 @@
   "compilerOptions": {
     "target": "ES5",
     "module": "esnext",
-
     "lib": ["DOM", "ES2015"],
     "jsx": "react-jsx",
     "strict": true,
@@ -12,8 +11,6 @@
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
     "declarationDir": "./dist/types",
-    "outDir": "./dist",
-    "emitDeclarationOnly": true
   },
   "include": ["src"]
 }
