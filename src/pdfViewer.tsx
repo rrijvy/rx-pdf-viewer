@@ -1,41 +1,86 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = "pdfjsWorker";
-
 interface PdfViewerProps {
-  pdfUrl: string;
+  workerSrc: string;
 }
 
-const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
+const PdfViewer: React.FC<PdfViewerProps> = (props: PdfViewerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const textLayeyRef = useRef<HTMLDivElement>(null);
+  const pdfContainerRef = useRef<HTMLDivElement>(null);
+  const pdfRef = useRef<pdfjsLib.PDFDocumentProxy>();
+  const containerRef = useRef<HTMLElement>();
+  const pageRendering = useRef(false);
 
   useEffect(() => {
-    const loadPdf = async () => {
-      const loadingTask = pdfjsLib.getDocument(pdfUrl);
-      const pdf = await loadingTask.promise;
-      const page = await pdf.getPage(1);
-      const scale = 1.5;
-      const viewport = page.getViewport({ scale });
+    (async (param?: PdfViewerProps) => {
+      if (param) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = param.workerSrc;
+        const pdfUrl = "https://p1stonimage.s3.amazonaws.com/ManualImportTemplate/dev/Baula+Ke+Banailo+Re+By+Humayun+Ahmed.pdf";
+        const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+        pdfRef.current = pdf;
+        renderPage(1, 1);
+      }
+    })(props);
+  }, []);
 
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const context = canvas.getContext("2d");
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
+  const renderPage = (pageNum: number, zoomLevel?: number) => {
+    pageRendering.current = true;
 
-      const renderContext = {
-        canvasContext: context!,
-        viewport: viewport,
-      };
+    if (pdfRef.current && canvasRef.current) {
+      let scale = zoomLevel || 1,
+        canvas = canvasRef.current,
+        ctx = canvasRef.current?.getContext("2d");
 
-      await page.render(renderContext).promise;
-    };
+      pdfRef.current.getPage(pageNum).then((page) => {
+        if (!ctx || !textLayeyRef.current) return;
 
-    loadPdf();
-  }, [pdfUrl]);
+        textLayeyRef.current.setAttribute("class", "textLayer");
+        textLayeyRef.current.style.setProperty("--scale-factor", scale.toString());
+        textLayeyRef.current.style.left = canvasRef.current?.offsetLeft + "px";
+        textLayeyRef.current.style.top = canvasRef.current?.offsetTop + "px";
 
-  return <canvas ref={canvasRef}></canvas>;
+        let viewport = page.getViewport({ scale: scale });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        if (containerRef.current && containerRef.current.clientWidth < viewport.width) {
+          if (pdfContainerRef.current) pdfContainerRef.current.style.left = "0";
+        } else {
+          if (pdfContainerRef.current) pdfContainerRef.current.style.left = "auto";
+        }
+
+        let renderContext = {
+          canvasContext: ctx,
+          viewport: viewport,
+        };
+
+        const renderTask = page.render(renderContext);
+        renderTask.promise
+          .then(() => {
+            pageRendering.current = false;
+            return page.getTextContent();
+          })
+          .then((textContent) => {
+            if (textLayeyRef.current)
+              pdfjsLib.renderTextLayer({
+                textContentSource: textContent,
+                container: textLayeyRef.current,
+                viewport: viewport,
+                textDivs: [],
+              });
+          });
+      });
+    }
+  };
+
+  return (
+    <div ref={pdfContainerRef}>
+      <canvas ref={canvasRef} />
+      <div ref={textLayeyRef} />
+    </div>
+  );
 };
 
 export default PdfViewer;
