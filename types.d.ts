@@ -5,3 +5,9 @@ declare module "pdfjs-dist/build/pdf.js" {
   const pdfjs: typeof PDFJS;
   export default pdfjs;
 }
+
+declare module "pdfjs-dist/web/pdf_viewer.js" {
+  import type PDFJSWEB from "pdfjs-dist/web/pdf_viewer.d.ts";
+  const pdfjsWeb: typeof PDFJSWEB;
+  export default pdfjsWeb;
+}

@@ -1,6 +1,6 @@
 {
   "name": "rx-pdf-viewer",
-  "version": "1.0.0",
+  "version": "1.0.26",
   "type": "module",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -32,8 +32,10 @@
     "typescript": "^5.4.5",
     "vitest": "^1.6.0"
   },
-  "dependencies": {
-    "pdfjs-dist": "^3.11.174",
+  "peerDependencies": {
     "react": "^18.3.1"
+  },
+  "dependencies": {
+    "pdfjs-dist": "^3.11.174"
   }
 }
