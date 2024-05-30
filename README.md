@@ -1,30 +1,77 @@
-# React + TypeScript + Vite
+# rx-pdf-viewer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+`rx-pdf-viewer` is a lightweight PDF viewer for React that allows text selection if available. It leverages the `pdfjs-dist` library under the hood to render PDFs.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Render PDFs in your React applications.
+- Supports text selection.
+- Simple and easy to use.
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+You can install `rx-pdf-viewer` via npm:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+npm install rx-pdf-viewer
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Usage
+
+To use `rx-pdf-viewer` in your React project, you need to import the `PdfViewer` component and provide a worker source and the URL of the PDF file you want to display.
+
+```bash
+import React from 'react';
+import PdfViewer from 'rx-pdf-viewer';
+
+function App() {
+  return (
+    <div className="App">
+      <PdfViewer workerSrc={`${window.location.origin}/pdf.worker.min.js`} fileUrl="path/to/your/file.pdf" />
+    </div>
+  );
+}
+
+export default App;
+```
+
+## Props
+
+The `PdfViewer` component requires the following props:
+
+`workerSrc`: A string representing the URL to the PDF.js worker script. This must be provided.
+`fileUrl`: A string representing the URL of the PDF file to be displayed.
+
+## Example
+
+Ensure you have the `pdf.worker.min.js` file available in your public directory or a location accessible via the URL you provide to `workerSrc`.
+
+Here is an example of how you might set this up:
+
+- Download the pdf.worker.min.js file from the pdfjs-dist repository or include it from a CDN.
+- Place the pdf.worker.min.js file in your public directory.
+- Provide the correct path to the workerSrc prop.
+
+#### Download pdf.worker.min.js
+
+You can download the pdf.worker.min.js file from the pdfjs-dist repository:
+
+#### Using pdf.worker.min.js from a CDN
+
+Alternatively, you can use a CDN to load the worker script:
+
+```bash
+<PdfViewer workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" fileUrl="path/to/your/file.pdf" />
+```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request if you have any improvements or bug fixes.
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Acknowledgements
+
+This project uses the pdfjs-dist library for rendering PDF documents.

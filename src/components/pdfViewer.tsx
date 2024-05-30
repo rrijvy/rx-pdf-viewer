@@ -1,33 +1,43 @@
-import { useEffect, useRef } from "react";
-import { getDocument, GlobalWorkerOptions, PDFDocumentProxy, renderTextLayer } from "pdfjs-dist";
+import pdfjsLib from "../pdf";
+import pdfjsWeb from "../pdfWeb";
+import { PDFDocumentProxy } from "pdfjs-dist";
+import { FC, useEffect, useRef } from "react";
+import "pdfjs-dist/web/pdf_viewer.css";
+import { EventBus } from "pdfjs-dist/web/pdf_viewer";
 
-const RxPdfViewer = () => {
-  const pdfRef = useRef<PDFDocumentProxy>();
+type PdfViewerProps = {
+  workerSrc: string;
+  fileUrl: string;
+};
+
+const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const textLayeyRef = useRef<HTMLDivElement>(null);
   const pdfContainerRef = useRef<HTMLDivElement>(null);
+  const pdfRef = useRef<PDFDocumentProxy>();
   const containerRef = useRef<HTMLElement>();
   const pageRendering = useRef(false);
+  const pdfjs = useRef(false);
+  const eventBusRef = useRef<EventBus>();
 
   useEffect(() => {
-    (async function () {
-      GlobalWorkerOptions.workerSrc = window.location.origin + "/pdf.worker.min.js";
-      console.log(GlobalWorkerOptions.workerSrc);
-      const pdf = await getDocument(
-        "https://p1stonimage.s3.amazonaws.com/ManualImportTemplate/dev/Baula+Ke+Banailo+Re+By+Humayun+Ahmed.pdf"
-      ).promise;
+    (async (param: PdfViewerProps) => {
+      pdfjsLib.GlobalWorkerOptions.workerSrc = props.workerSrc;
+      const pdfUrl = "https://p1stonimage.s3.amazonaws.com/ManualImportTemplate/dev/Baula+Ke+Banailo+Re+By+Humayun+Ahmed.pdf";
+      const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
       pdfRef.current = pdf;
+      eventBusRef.current = new pdfjsWeb.EventBus();
       renderPage(1, 1);
-    })();
+    })(props);
   }, []);
 
   const renderPage = (pageNum: number, zoomLevel?: number) => {
     pageRendering.current = true;
 
     if (pdfRef.current && canvasRef.current) {
-      let scale = zoomLevel || 1;
-      let canvas = canvasRef.current;
-      let ctx = canvasRef.current?.getContext("2d");
+      let scale = zoomLevel || 1,
+        canvas = canvasRef.current,
+        ctx = canvasRef.current?.getContext("2d");
 
       pdfRef.current.getPage(pageNum).then((page) => {
         if (!ctx || !textLayeyRef.current) return;
@@ -60,7 +70,7 @@ const RxPdfViewer = () => {
           })
           .then((textContent) => {
             if (textLayeyRef.current)
-              renderTextLayer({
+              pdfjsLib.renderTextLayer({
                 textContentSource: textContent,
                 container: textLayeyRef.current,
                 viewport: viewport,
@@ -71,12 +81,14 @@ const RxPdfViewer = () => {
     }
   };
 
+  console.log("::: Pdf viewer loaded :::");
+
   return (
-    <div ref={pdfContainerRef}>
+    <div className="pdf-viewer" ref={pdfContainerRef} style={{ position: "relative" }}>
       <canvas ref={canvasRef} />
       <div ref={textLayeyRef} />
     </div>
   );
 };
 
-export default RxPdfViewer;
+export default PdfViewer;
