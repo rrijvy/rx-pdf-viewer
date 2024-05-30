@@ -23,7 +23,7 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   useEffect(() => {
     (async (param: PdfViewerProps) => {
       pdfjsLib.GlobalWorkerOptions.workerSrc = props.workerSrc;
-      const pdfUrl = "https://p1stonimage.s3.amazonaws.com/ManualImportTemplate/dev/Baula+Ke+Banailo+Re+By+Humayun+Ahmed.pdf";
+      const pdfUrl = props.fileUrl;
       const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
       pdfRef.current = pdf;
       eventBusRef.current = new pdfjsWeb.EventBus();
