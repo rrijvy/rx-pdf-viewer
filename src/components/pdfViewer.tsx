@@ -2,8 +2,8 @@ import pdfjsLib from "../pdf";
 import pdfjsWeb from "../pdfWeb";
 import { PDFDocumentProxy } from "pdfjs-dist";
 import { FC, useEffect, useRef } from "react";
-import "pdfjs-dist/web/pdf_viewer.css";
 import { EventBus } from "pdfjs-dist/web/pdf_viewer";
+import "pdfjs-dist/web/pdf_viewer.css";
 
 type PdfViewerProps = {
   workerSrc: string;
