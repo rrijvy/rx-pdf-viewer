@@ -48,13 +48,13 @@ Ensure you have the `pdf.worker.min.js` file available in your public directory 
 
 Here is an example of how you might set this up:
 
-- Download the pdf.worker.min.js file from the pdfjs-dist repository or include it from a CDN.
-- Place the pdf.worker.min.js file in your public directory.
+- Download the `pdf.worker.min.js` file from the `pdfjs-dist` repository or include it from a CDN.
+- Place the `pdf.worker.min.js` file in your public directory.
 - Provide the correct path to the workerSrc prop.
 
 #### Download pdf.worker.min.js
 
-You can download the pdf.worker.min.js file from the pdfjs-dist repository:
+You can download the `pdf.worker.min.js` file from the pdfjs-dist repository:
 
 #### Using pdf.worker.min.js from a CDN
 
@@ -70,8 +70,8 @@ Contributions are welcome! Please open an issue or submit a pull request if you 
 
 ## License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+No license bro!
 
 ## Acknowledgements
 
-This project uses the pdfjs-dist library for rendering PDF documents.
+This project uses the `pdfjs-dist` library for rendering PDF documents. Right now it uses 3.11.174.
