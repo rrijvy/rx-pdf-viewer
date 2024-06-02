@@ -22,7 +22,7 @@ To use `rx-pdf-viewer` in your React project, you need to import the `PdfViewer`
 
 ```bash
 import React from 'react';
-import PdfViewer from 'rx-pdf-viewer';
+import { PdfViewer } from 'rx-pdf-viewer';
 
 function App() {
   return (
