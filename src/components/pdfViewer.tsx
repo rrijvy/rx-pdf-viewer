@@ -1,9 +1,7 @@
 import pdfjsLib from "../pdf";
-import pdfjsWeb from "../pdfWeb";
 import { PDFDocumentProxy } from "pdfjs-dist";
 import { FC, useEffect, useRef } from "react";
 import "pdfjs-dist/web/pdf_viewer.css";
-import { EventBus } from "pdfjs-dist/web/pdf_viewer";
 
 type PdfViewerProps = {
   workerSrc: string;
@@ -17,8 +15,6 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   const pdfRef = useRef<PDFDocumentProxy>();
   const containerRef = useRef<HTMLElement>();
   const pageRendering = useRef(false);
-  const pdfjs = useRef(false);
-  const eventBusRef = useRef<EventBus>();
 
   useEffect(() => {
     (async (param: PdfViewerProps) => {
@@ -26,7 +22,6 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
       const pdfUrl = "https://p1stonimage.s3.amazonaws.com/ManualImportTemplate/dev/Baula+Ke+Banailo+Re+By+Humayun+Ahmed.pdf";
       const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
       pdfRef.current = pdf;
-      eventBusRef.current = new pdfjsWeb.EventBus();
       renderPage(1, 1);
     })(props);
   }, []);
