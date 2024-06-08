@@ -1,4 +1,5 @@
 /// <reference types="pdfjs-dist/types/src/pdf.d.ts" />
+/// <reference types="pdfjs-dist/web/pdf_viewer.d.ts" />
 
 declare module "pdfjs-dist/build/pdf.js" {
   import type PDFJS from "pdfjs-dist/types/src/pdf.d.ts";
