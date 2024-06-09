@@ -1,6 +1,6 @@
 {
   "name": "rx-pdf-viewer",
-  "version": "1.0.35",
+  "version": "1.0.36",
   "type": "module",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
