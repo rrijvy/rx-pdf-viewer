@@ -24,6 +24,7 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   const zoomControlRef = useRef<HTMLDivElement>(null);
   const totalPagesRef = useRef<HTMLParagraphElement>(null);
   const zoomLevelRef = useRef<HTMLSpanElement>(null);
+  const pageNoInputRef = useRef<HTMLInputElement>(null);
   const totalPageNo = useRef<number>(1);
   const currentPageNo = useRef<number>(1);
   const defaultScaleValue = useRef<number>(1);
@@ -143,6 +144,9 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
       const value = parseInt(event.target.value);
       if (value >= 1 && value <= totalPageNo.current) {
         renderPage(value, currentScaleValue.current);
+        if (pageNoInputRef.current) {
+          pageNoInputRef.current.value = value.toString();
+        }
       }
     }
   };
@@ -156,7 +160,7 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
           <button className="btn-icon mr" type="button" title="arrow left" onClick={renderPreviousPage}>
             <ArrowLeft />
           </button>
-          <input className="mx" type="number" placeholder="0" value={1} onChange={jumpToPage} />
+          <input className="mx" type="number" placeholder="0" value={currentPageNo.current} onChange={jumpToPage} ref={pageNoInputRef} />
           <span className="mx">/</span>
           <span className="mx" ref={totalPagesRef}></span>
           <button className="btn-icon ml" type="button" title="arrow right" onClick={renderNextPage}>
