@@ -64,6 +64,12 @@ Alternatively, you can use a CDN to load the worker script:
 <PdfViewer workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" fileUrl="path/to/your/file.pdf" />
 ```
 
+#### If you want the toolbar working properly. You must import css file
+
+```bash
+import "rx-pdf-viewer/dist/index.css";
+```
+
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request if you have any improvements or bug fixes.
