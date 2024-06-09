@@ -1,6 +1,6 @@
 import pdfjsLib from "../pdf";
 import { PDFDocumentProxy } from "pdfjs-dist";
-import { FC, useEffect, useRef, MouseEvent } from "react";
+import { FC, useEffect, useRef, MouseEvent, ChangeEvent } from "react";
 import FaMinus from "./icons/faMinus";
 import FaPlus from "./icons/faPlus";
 import ArrowLeft from "./icons/arrowLeft";
@@ -138,6 +138,15 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
     }
   };
 
+  const jumpToPage = (event: ChangeEvent<HTMLInputElement>): void => {
+    if (event.target.value) {
+      const value = parseInt(event.target.value);
+      if (value >= 1 && value <= totalPageNo.current) {
+        renderPage(value, currentScaleValue.current);
+      }
+    }
+  };
+
   console.log("::: Pdf viewer loaded :::");
 
   return (
@@ -147,7 +156,7 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
           <button className="btn-icon mr" type="button" title="arrow left" onClick={renderPreviousPage}>
             <ArrowLeft />
           </button>
-          <input className="mx" type="number" placeholder="0" value={1} />
+          <input className="mx" type="number" placeholder="0" value={1} onChange={jumpToPage} />
           <span className="mx">/</span>
           <span className="mx" ref={totalPagesRef}></span>
           <button className="btn-icon ml" type="button" title="arrow right" onClick={renderNextPage}>
@@ -158,7 +167,7 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
           <button className="btn-icon mr" type="button" title="minus" onClick={zoomOut}>
             <FaMinus />
           </button>
-          <span className="mx" ref={zoomLevelRef} style={{ width: "20px", textAlign: "center" }}>
+          <span className="mx" ref={zoomLevelRef} style={{ minWidth: "20px", textAlign: "center" }}>
             {"ZOOM LEVEL"}
           </span>
           <button className="btn-icon ml" type="button" title="plus" onClick={zoomIn}>
