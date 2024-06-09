@@ -84,6 +84,10 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
           zoomLevelRef.current.innerHTML = zoomLevel.toString();
         }
 
+        if (pageNoInputRef.current) {
+          pageNoInputRef.current.value = currentPageNo.current.toString();
+        }
+
         let viewport = page.getViewport({ scale: scale });
         canvas.height = viewport.height;
         canvas.width = viewport.width;
@@ -160,7 +164,7 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
           <button className="btn-icon mr" type="button" title="arrow left" onClick={renderPreviousPage}>
             <ArrowLeft />
           </button>
-          <input className="mx" type="number" placeholder="0" value={currentPageNo.current} onChange={jumpToPage} ref={pageNoInputRef} />
+          <input className="mx" type="number" placeholder="0" onChange={jumpToPage} ref={pageNoInputRef} />
           <span className="mx">/</span>
           <span className="mx" ref={totalPagesRef}></span>
           <button className="btn-icon ml" type="button" title="arrow right" onClick={renderNextPage}>
