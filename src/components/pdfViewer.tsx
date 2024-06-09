@@ -85,7 +85,7 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
         }
 
         if (pageNoInputRef.current) {
-          pageNoInputRef.current.value = currentPageNo.current.toString();
+          pageNoInputRef.current.value = pageNum.toString();
         }
 
         let viewport = page.getViewport({ scale: scale });
