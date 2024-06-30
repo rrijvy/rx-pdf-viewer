@@ -156,9 +156,14 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
     if (event.target.value) {
       const value = parseInt(event.target.value);
       if (value >= 1 && value <= totalPageNo.current) {
-        renderPage(value, currentScaleValue.current);
+        currentPageNo.current = value;
+        renderPage(currentPageNo.current, currentScaleValue.current);
         if (pageNoInputRef.current) {
           pageNoInputRef.current.value = value.toString();
+        }
+      } else {
+        if (pageNoInputRef.current) {
+          pageNoInputRef.current.value = currentPageNo.current.toString();
         }
       }
     }
