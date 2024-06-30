@@ -11,6 +11,7 @@ import "../styles.css";
 type PdfViewerProps = {
   workerSrc: string;
   fileUrl: string;
+  showToolbar?: boolean;
 };
 
 const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
@@ -173,30 +174,32 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
 
   return (
     <>
-      <div className="toolbar">
-        <div className="flex" ref={pageControlRef}>
-          <button className="btn-icon mr" type="button" title="arrow left" onClick={renderPreviousPage}>
-            <ArrowLeft />
-          </button>
-          <input className="mx" type="number" placeholder="0" onChange={jumpToPage} ref={pageNoInputRef} />
-          <span className="mx">/</span>
-          <span className="mx" ref={totalPagesRef}></span>
-          <button className="btn-icon ml" type="button" title="arrow right" onClick={renderNextPage}>
-            <ArrowRight />
-          </button>
+      {props.showToolbar && (
+        <div className="toolbar">
+          <div className="flex" ref={pageControlRef}>
+            <button className="btn-icon mr" type="button" title="arrow left" onClick={renderPreviousPage}>
+              <ArrowLeft />
+            </button>
+            <input className="mx" type="number" placeholder="0" onChange={jumpToPage} ref={pageNoInputRef} />
+            <span className="mx">/</span>
+            <span className="mx" ref={totalPagesRef}></span>
+            <button className="btn-icon ml" type="button" title="arrow right" onClick={renderNextPage}>
+              <ArrowRight />
+            </button>
+          </div>
+          <div className="flex" ref={zoomControlRef}>
+            <button className="btn-icon mr" type="button" title="minus" onClick={zoomOut}>
+              <FaMinus />
+            </button>
+            <span className="mx" ref={zoomLevelRef} style={{ minWidth: "20px", textAlign: "center" }}>
+              {"ZOOM LEVEL"}
+            </span>
+            <button className="btn-icon ml" type="button" title="plus" onClick={zoomIn}>
+              <FaPlus />
+            </button>
+          </div>
         </div>
-        <div className="flex" ref={zoomControlRef}>
-          <button className="btn-icon mr" type="button" title="minus" onClick={zoomOut}>
-            <FaMinus />
-          </button>
-          <span className="mx" ref={zoomLevelRef} style={{ minWidth: "20px", textAlign: "center" }}>
-            {"ZOOM LEVEL"}
-          </span>
-          <button className="btn-icon ml" type="button" title="plus" onClick={zoomIn}>
-            <FaPlus />
-          </button>
-        </div>
-      </div>
+      )}
       <div
         className="pdf-viewer"
         ref={pdfContainerRef}
