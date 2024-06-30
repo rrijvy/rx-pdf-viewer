@@ -99,23 +99,28 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
         const renderTask = page.render(renderContext);
         renderTask.promise
           .then(() => {
-            pageRendering.current = false;
             return page.getTextContent();
           })
           .then((textContent) => {
-            if (textLayeyRef.current)
-              pdfjsLib.renderTextLayer({
-                textContentSource: textContent,
-                container: textLayeyRef.current,
-                viewport: viewport,
-                textDivs: [],
-              });
+            if (textLayeyRef.current) {
+              pdfjsLib
+                .renderTextLayer({
+                  textContentSource: textContent,
+                  container: textLayeyRef.current,
+                  viewport: viewport,
+                  textDivs: [],
+                })
+                .promise.then(() => {
+                  pageRendering.current = false;
+                });
+            }
           });
       });
     }
   };
 
   const renderPreviousPage = (event: MouseEvent<HTMLButtonElement>): void => {
+    if (pageRendering.current) return;
     if (currentPageNo.current > 1) {
       currentPageNo.current = currentPageNo.current - 1;
       renderPage(currentPageNo.current, currentScaleValue.current);
@@ -123,13 +128,15 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   };
 
   const renderNextPage = (event: MouseEvent<HTMLButtonElement>): void => {
-    if (currentPageNo.current <= totalPageNo.current) {
+    if (pageRendering.current) return;
+    if (currentPageNo.current < totalPageNo.current) {
       currentPageNo.current = currentPageNo.current + 1;
       renderPage(currentPageNo.current, currentScaleValue.current);
     }
   };
 
   const zoomIn = (event: MouseEvent<HTMLButtonElement>): void => {
+    if (pageRendering.current) return;
     if (currentScaleValue.current <= 5) {
       currentScaleValue.current = currentScaleValue.current + 0.5;
       renderPage(currentPageNo.current, currentScaleValue.current);
@@ -137,6 +144,7 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   };
 
   const zoomOut = (event: MouseEvent<HTMLButtonElement>): void => {
+    if (pageRendering.current) return;
     if (currentScaleValue.current > 0.5) {
       currentScaleValue.current = currentScaleValue.current - 0.5;
       renderPage(currentPageNo.current, currentScaleValue.current);
@@ -144,6 +152,7 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   };
 
   const jumpToPage = (event: ChangeEvent<HTMLInputElement>): void => {
+    if (pageRendering.current) return;
     if (event.target.value) {
       const value = parseInt(event.target.value);
       if (value >= 1 && value <= totalPageNo.current) {
