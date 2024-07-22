@@ -1,16 +1,18 @@
 import pdfjsLib from "../pdf";
 import { PDFDocumentProxy } from "pdfjs-dist";
-import { FC, useEffect, useRef, MouseEvent, ChangeEvent } from "react";
+import { FC, useEffect, useRef, MouseEvent, FocusEvent } from "react";
 import FaMinus from "./icons/faMinus";
 import FaPlus from "./icons/faPlus";
 import ArrowLeft from "./icons/arrowLeft";
 import ArrowRight from "./icons/arrowRight";
 import "pdfjs-dist/web/pdf_viewer.css";
 import "../styles.css";
+import ControlHelper, { RenderCallback } from "../helpers/controlHelpers";
 
 type PdfViewerProps = {
   workerSrc: string;
-  fileUrl: string;
+  documentSrc: string | URL | ArrayBuffer;
+  documentName?: string;
   showToolbar?: boolean;
 };
 
@@ -18,19 +20,17 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const textLayeyRef = useRef<HTMLDivElement>(null);
   const pdfContainerRef = useRef<HTMLDivElement>(null);
+  const pdfPagesWrapper = useRef<HTMLDivElement>(null);
   const pdfRef = useRef<PDFDocumentProxy>();
-  const containerRef = useRef<HTMLElement>();
   const pageRendering = useRef(false);
   const pageControlRef = useRef<HTMLDivElement>(null);
   const zoomControlRef = useRef<HTMLDivElement>(null);
   const totalPagesRef = useRef<HTMLParagraphElement>(null);
   const zoomLevelRef = useRef<HTMLSpanElement>(null);
   const pageNoInputRef = useRef<HTMLInputElement>(null);
-  const totalPageNo = useRef<number>(1);
-  const currentPageNo = useRef<number>(1);
-  const defaultScaleValue = useRef<number>(1);
-  const currentScaleValue = useRef<number>(1);
   const ovserverRef = useRef<MutationObserver>();
+
+  const controlHelperRef = useRef<ControlHelper>();
 
   const config = { attributes: true, childList: true, subtree: true };
 
@@ -48,18 +48,18 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   useEffect(() => {
     (async (param: PdfViewerProps) => {
       pdfjsLib.GlobalWorkerOptions.workerSrc = props.workerSrc;
-      const pdfUrl = props.fileUrl;
-      const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-      pdfRef.current = pdf;
+      pdfRef.current = await pdfjsLib.getDocument(props.documentSrc).promise;
+      controlHelperRef.current = new ControlHelper(renderPage);
       if (totalPagesRef.current) {
-        totalPageNo.current = pdf.numPages;
-        totalPagesRef.current.innerHTML = pdf.numPages.toString();
+        controlHelperRef.current.TotalPages = pdfRef.current.numPages;
+        totalPagesRef.current.innerHTML = pdfRef.current.numPages.toString();
       }
       ovserverRef.current = new MutationObserver(callback);
       if (canvasRef.current) {
         ovserverRef.current.observe(canvasRef.current, config);
       }
-      renderPage(currentPageNo.current, currentScaleValue.current);
+      renderPage(controlHelperRef.current.CurrentPageNumber, controlHelperRef.current.CurrentScaleValue);
+      renderPageList();
     })(props);
 
     return () => {
@@ -67,7 +67,41 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
     };
   }, []);
 
-  const renderPage = (pageNum: number, zoomLevel?: number) => {
+  const renderPageList = () => {
+    if (pdfRef.current && pdfPagesWrapper.current && controlHelperRef.current) {
+      for (let i = 1; i <= controlHelperRef.current.TotalPages; i++) {
+        const newCanvas = document.createElement("canvas");
+        const newDiv = document.createElement("div");
+        newDiv.innerHTML = i.toString();
+        newDiv.classList.add("pb");
+        newCanvas.classList.add("pdf-list-item");
+        newCanvas.addEventListener("click", () => {
+          renderPage(i, controlHelperRef.current?.CurrentScaleValue);
+          if (controlHelperRef.current) {
+            controlHelperRef.current.CurrentPageNumber = i;
+          }
+        });
+        let scale = 0.18,
+          canvas = newCanvas,
+          ctx = newCanvas?.getContext("2d");
+        pdfRef.current.getPage(i).then((page) => {
+          if (!ctx) return;
+          let viewport = page.getViewport({ scale: scale });
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+          let renderContext = {
+            canvasContext: ctx,
+            viewport: viewport,
+          };
+          page.render(renderContext);
+        });
+        pdfPagesWrapper.current.appendChild(newCanvas);
+        pdfPagesWrapper.current.appendChild(newDiv);
+      }
+    }
+  };
+
+  const renderPage: RenderCallback = (pageNum: number, zoomLevel?: number) => {
     pageRendering.current = true;
 
     if (pdfRef.current && canvasRef.current) {
@@ -122,49 +156,36 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
 
   const renderPreviousPage = (event: MouseEvent<HTMLButtonElement>): void => {
     if (pageRendering.current) return;
-    if (currentPageNo.current > 1) {
-      currentPageNo.current = currentPageNo.current - 1;
-      renderPage(currentPageNo.current, currentScaleValue.current);
-    }
+    controlHelperRef.current?.RenderPreviousPage();
   };
 
   const renderNextPage = (event: MouseEvent<HTMLButtonElement>): void => {
     if (pageRendering.current) return;
-    if (currentPageNo.current < totalPageNo.current) {
-      currentPageNo.current = currentPageNo.current + 1;
-      renderPage(currentPageNo.current, currentScaleValue.current);
-    }
+    controlHelperRef.current?.RenderNextPage();
   };
 
   const zoomIn = (event: MouseEvent<HTMLButtonElement>): void => {
     if (pageRendering.current) return;
-    if (currentScaleValue.current <= 5) {
-      currentScaleValue.current = currentScaleValue.current + 0.5;
-      renderPage(currentPageNo.current, currentScaleValue.current);
-    }
+    controlHelperRef.current?.ZoomIn();
   };
 
   const zoomOut = (event: MouseEvent<HTMLButtonElement>): void => {
     if (pageRendering.current) return;
-    if (currentScaleValue.current > 0.5) {
-      currentScaleValue.current = currentScaleValue.current - 0.5;
-      renderPage(currentPageNo.current, currentScaleValue.current);
-    }
+    controlHelperRef.current?.ZoomOut();
   };
 
-  const jumpToPage = (event: ChangeEvent<HTMLInputElement>): void => {
+  const jumpToPage = (event: FocusEvent<HTMLInputElement>): void => {
     if (pageRendering.current) return;
     if (event.target.value) {
       const value = parseInt(event.target.value);
-      if (value >= 1 && value <= totalPageNo.current) {
-        currentPageNo.current = value;
-        renderPage(currentPageNo.current, currentScaleValue.current);
+      controlHelperRef.current?.JumpToPage(value);
+      if (value >= 1 && value <= (controlHelperRef.current?.TotalPages ?? 0)) {
         if (pageNoInputRef.current) {
           pageNoInputRef.current.value = value.toString();
         }
       } else {
         if (pageNoInputRef.current) {
-          pageNoInputRef.current.value = currentPageNo.current.toString();
+          pageNoInputRef.current.value = (controlHelperRef.current?.CurrentPageNumber ?? 1).toString();
         }
       }
     }
@@ -173,42 +194,39 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   console.log("::: Pdf viewer loaded :::");
 
   return (
-    <>
-      {props.showToolbar && (
-        <div className="toolbar">
-          <div className="flex" ref={pageControlRef}>
-            <button className="btn-icon mr" type="button" title="arrow left" onClick={renderPreviousPage}>
-              <ArrowLeft />
-            </button>
-            <input className="mx" type="number" placeholder="0" onChange={jumpToPage} ref={pageNoInputRef} />
-            <span className="mx">/</span>
-            <span className="mx" ref={totalPagesRef}></span>
-            <button className="btn-icon ml" type="button" title="arrow right" onClick={renderNextPage}>
-              <ArrowRight />
-            </button>
-          </div>
-          <div className="flex" ref={zoomControlRef}>
-            <button className="btn-icon mr" type="button" title="minus" onClick={zoomOut}>
-              <FaMinus />
-            </button>
-            <span className="mx" ref={zoomLevelRef} style={{ minWidth: "20px", textAlign: "center" }}>
-              {"ZOOM LEVEL"}
-            </span>
-            <button className="btn-icon ml" type="button" title="plus" onClick={zoomIn}>
-              <FaPlus />
-            </button>
-          </div>
+    <div style={{ height: "100vh" }}>
+      <div className="toolbar">
+        <div className="flex px" ref={pageControlRef}>
+          <button className="btn-icon mr" type="button" title="arrow left" onClick={renderPreviousPage}>
+            <ArrowLeft />
+          </button>
+          <input className="mx bg-Black" type="number" placeholder="0" onBlur={jumpToPage} ref={pageNoInputRef} />
+          <span className="mx">/</span>
+          <span className="mx" ref={totalPagesRef}></span>
+          <button className="btn-icon ml" type="button" title="arrow right" onClick={renderNextPage}>
+            <ArrowRight />
+          </button>
         </div>
-      )}
-      <div
-        className="pdf-viewer"
-        ref={pdfContainerRef}
-        style={{ position: "relative", width: "900px", height: "calc(100vh - 100px)", overflow: "auto" }}
-      >
-        <canvas ref={canvasRef} />
-        <div ref={textLayeyRef} />
+        <div className="flex px" ref={zoomControlRef}>
+          <button className="btn-icon mr" type="button" title="minus" onClick={zoomOut}>
+            <FaMinus />
+          </button>
+          <span className="mx" ref={zoomLevelRef} style={{ minWidth: "20px", textAlign: "center" }}>
+            {"ZOOM LEVEL"}
+          </span>
+          <button className="btn-icon ml" type="button" title="plus" onClick={zoomIn}>
+            <FaPlus />
+          </button>
+        </div>
       </div>
-    </>
+      <div className="pdf-viewer-wrapper">
+        <div className="pdf-list-wrapper" ref={pdfPagesWrapper}></div>
+        <div className="pdf-viewer bg-Gray700" ref={pdfContainerRef}>
+          <canvas ref={canvasRef} />
+          <div ref={textLayeyRef} />
+        </div>
+      </div>
+    </div>
   );
 };
 

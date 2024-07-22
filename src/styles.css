@@ -1,3 +1,6 @@
+/* ---------------------------
+      Scrollbar
+---------------------------- */
 * {
   scrollbar-width: thin;
 }
@@ -15,6 +18,97 @@
   border-radius: 10px;
   background-color: var(--Gray500);
 }
+
+/* ---------------------------
+      Backgound Colors
+---------------------------- */
+.bg-Black {
+  background-color: #000000;
+}
+.bg-Blue800 {
+  background-color: #1b3f72;
+}
+.bg-Gray50 {
+  background-color: #f4f5f6;
+}
+.bg-Gray100 {
+  background-color: #edeef0;
+}
+.bg-Gray200 {
+  background-color: #d4d5d8;
+}
+.bg-Gray300 {
+  background-color: #c3c5c9;
+}
+.bg-Gray400 {
+  background-color: #a9acb1;
+}
+.bg-Gray500 {
+  background-color: #8b8e92;
+}
+.bg-Gray600 {
+  background-color: #727579;
+}
+.bg-Gray700 {
+  background-color: #616467;
+}
+.bg-Gray800 {
+  background-color: #4c4e4f;
+}
+
+/* ---------------------------
+        Margins
+---------------------------- */
+.m {
+  margin: 7px;
+}
+.mx {
+  margin: 0px 7px;
+}
+.my {
+  margin: 7px 0px;
+}
+.ml {
+  margin-left: 7px;
+}
+.mr {
+  margin-right: 7px;
+}
+.mt {
+  margin-top: 7px;
+}
+.mb {
+  margin-bottom: 7px;
+}
+
+/* ---------------------------
+        Paddings
+---------------------------- */
+.p {
+  padding: 7px;
+}
+.px {
+  padding: 0px 7px;
+}
+.py {
+  padding: 7px 0px;
+}
+.pl {
+  padding-left: 7px;
+}
+.pr {
+  padding-right: 7px;
+}
+.pt {
+  padding-top: 7px;
+}
+.pb {
+  padding-bottom: 7px;
+}
+
+/* ---------------------------
+      Navigation Buttons
+---------------------------- */
 
 .btn-icon {
   background-color: #ffffff;
@@ -63,45 +157,9 @@
   transform: translate(-50%, -50%);
 }
 
-.flex {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  padding-bottom: 15px;
-}
-
-.m {
-  margin: 7px;
-}
-.mx {
-  margin: 0px 7px;
-}
-.my {
-  margin: 7px 0px;
-}
-.ml {
-  margin-left: 7px;
-}
-.mr {
-  margin-right: 7px;
-}
-.mt {
-  margin-top: 7px;
-}
-.mb {
-  margin-bottom: 7px;
-}
-
+/* ---------------------------
+      Page Number Input  
+---------------------------- */
 input {
   border: none;
   width: 20px;
@@ -127,4 +185,62 @@ input::-webkit-inner-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* ---------------------------
+      Custom Styles  
+---------------------------- */
+.box-shadow {
+  border: 2px solid transparent;
+  box-shadow: -1px 5px 6px 0px #333333;
+}
+
+.hover-pointer:hover {
+  cursor: pointer;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background-color: #323639;
+}
+
+.pdf-viewer-wrapper {
+  display: flex;
+  width: 100vw;
+  height: calc(100vh - 50px);
+}
+
+.pdf-list-wrapper {
+  width: 300px;
+  overflow: auto;
+  padding: 7px 0px;
+  background-color: #323639;
+}
+
+.pdf-list-item {
+  border: 4px solid transparent;
+}
+
+.pdf-list-item:hover {
+  cursor: pointer;
+  border: 4px solid #1b3f72;
+}
+
+.pdf-viewer {
+  position: relative;
+  width: calc(100% - 300px);
+  overflow: auto;
 }
