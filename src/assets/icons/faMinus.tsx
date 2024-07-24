@@ -1,4 +1,4 @@
-const FaMinus = () => {
+export const FaMinus = () => {
   return (
     <svg fill="none" version="1.1" xmlns="http://www.w3.org/2000/svg" width="10px" viewBox="0 0 83 83">
       <g>
@@ -10,5 +10,3 @@ const FaMinus = () => {
     </svg>
   );
 };
-
-export default FaMinus;

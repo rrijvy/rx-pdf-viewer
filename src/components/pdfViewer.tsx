@@ -1,20 +1,11 @@
+import "pdfjs-dist/web/pdf_viewer.css";
+import "../styles.css";
 import pdfjsLib from "../pdf";
 import { PDFDocumentProxy } from "pdfjs-dist";
 import { FC, useEffect, useRef, MouseEvent, FocusEvent } from "react";
-import FaMinus from "./icons/faMinus";
-import FaPlus from "./icons/faPlus";
-import ArrowLeft from "./icons/arrowLeft";
-import ArrowRight from "./icons/arrowRight";
-import "pdfjs-dist/web/pdf_viewer.css";
-import "../styles.css";
 import ControlHelper, { RenderCallback } from "../helpers/controlHelpers";
-
-type PdfViewerProps = {
-  workerSrc: string;
-  documentSrc: string | URL | ArrayBuffer;
-  documentName?: string;
-  showToolbar?: boolean;
-};
+import { PdfViewerProps } from "../types";
+import { ArrowLeft, ArrowRight, FaMinus, FaPlus } from "../assets/icons";
 
 const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -23,7 +14,6 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   const pdfPagesWrapper = useRef<HTMLDivElement>(null);
   const pdfRef = useRef<PDFDocumentProxy>();
   const pageRendering = useRef(false);
-  const pageControlRef = useRef<HTMLDivElement>(null);
   const zoomControlRef = useRef<HTMLDivElement>(null);
   const totalPagesRef = useRef<HTMLParagraphElement>(null);
   const zoomLevelRef = useRef<HTMLSpanElement>(null);
@@ -196,7 +186,7 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
   return (
     <div style={{ height: "100vh" }}>
       <div className="toolbar">
-        <div className="flex px" ref={pageControlRef}>
+        <div className="flex px">
           <button className="btn-icon mr" type="button" title="arrow left" onClick={renderPreviousPage}>
             <ArrowLeft />
           </button>

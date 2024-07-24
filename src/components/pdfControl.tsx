@@ -1,67 +1,65 @@
-import pdfjsLib from "../pdf";
-import { PDFDocumentProxy } from "pdfjs-dist";
-import { useRef, MouseEvent, ChangeEvent, useEffect } from "react";
-import FaMinus from "./icons/faMinus";
-import FaPlus from "./icons/faPlus";
-import ArrowLeft from "./icons/arrowLeft";
-import ArrowRight from "./icons/arrowRight";
+import { MouseEvent, FocusEvent, FC } from "react";
+import { PdfPageViewerProps } from "../types";
+import { ArrowLeft, ArrowRight, FaMinus, FaPlus } from "../assets/icons";
 
-interface PdfControlProps {
-  workerSrc: string;
-  documentSrc: string | URL | ArrayBuffer;
-  renderPreviousPage: (e: MouseEvent<HTMLButtonElement>) => void;
-  renderNextPage: (e: MouseEvent<HTMLButtonElement>) => void;
-  jumpToPage: (e: ChangeEvent<HTMLInputElement>) => void;
-  zoomOut: (e: MouseEvent<HTMLButtonElement>) => void;
-  zoomIn: (e: MouseEvent<HTMLButtonElement>) => void;
-}
+const PdfControl: FC<PdfPageViewerProps> = (props: PdfPageViewerProps) => {
+  const { pdfViewerHook } = props;
 
-const PdfControl = (props: PdfControlProps) => {
-  const pdfRef = useRef<PDFDocumentProxy>();
-  const pdfControlRef = useRef<HTMLDivElement>(null);
-  const zoomControlRef = useRef<HTMLDivElement>(null);
-  const pageNoInputRef = useRef<HTMLInputElement>(null);
-  const totalPagesRef = useRef<HTMLDivElement>(null);
-  const zoomLevelRef = useRef<HTMLSpanElement>(null);
-
-  const renderPreviousPage = (e: MouseEvent<HTMLButtonElement>) => {
-    props.renderPreviousPage(e);
+  const renderPreviousPage = (event: MouseEvent<HTMLButtonElement>): void => {
+    if (pdfViewerHook.pdfControls.IsPageRendering) return;
+    pdfViewerHook.pdfControls?.RenderPreviousPage();
   };
 
-  const renderNextPage = (e: MouseEvent<HTMLButtonElement>) => {
-    props.renderNextPage(e);
+  const renderNextPage = (event: MouseEvent<HTMLButtonElement>): void => {
+    if (pdfViewerHook.pdfControls.IsPageRendering) return;
+    pdfViewerHook.pdfControls?.RenderNextPage();
   };
 
-  const jumpToPage = (e: ChangeEvent<HTMLInputElement>) => {
-    props.jumpToPage(e);
+  const zoomIn = (event: MouseEvent<HTMLButtonElement>): void => {
+    if (pdfViewerHook.pdfControls.IsPageRendering) return;
+    pdfViewerHook.pdfControls?.ZoomIn();
   };
 
-  const zoomOut = (e: MouseEvent<HTMLButtonElement>) => {
-    props.zoomOut(e);
+  const zoomOut = (event: MouseEvent<HTMLButtonElement>): void => {
+    if (pdfViewerHook.pdfControls.IsPageRendering) return;
+    pdfViewerHook.pdfControls?.ZoomOut();
   };
 
-  const zoomIn = (e: MouseEvent<HTMLButtonElement>) => {
-    props.zoomIn(e);
+  const jumpToPage = (event: FocusEvent<HTMLInputElement>): void => {
+    if (pdfViewerHook.pdfControls?.IsPageRendering) return;
+    if (event.target.value) {
+      const value = parseInt(event.target.value);
+      pdfViewerHook.pdfControls?.JumpToPage(value);
+      if (value >= 1 && value <= (pdfViewerHook.pdfControls?.TotalPages ?? 0)) {
+        if (pdfViewerHook.refs.pageNoInput.current) {
+          pdfViewerHook.refs.pageNoInput.current.value = value.toString();
+        }
+      } else {
+        if (pdfViewerHook.refs.pageNoInput.current) {
+          pdfViewerHook.refs.pageNoInput.current.value = (pdfViewerHook.pdfControls?.CurrentPageNumber ?? 1).toString();
+        }
+      }
+    }
   };
 
   return (
     <div className="toolbar">
-      <div className="flex" ref={pdfControlRef}>
+      <div className="flex">
         <button className="btn-icon mr" type="button" title="arrow left" onClick={renderPreviousPage}>
           <ArrowLeft />
         </button>
-        <input className="mx" type="number" placeholder="0" onChange={jumpToPage} />
+        <input className="mx" type="number" placeholder="0" onChange={jumpToPage} ref={pdfViewerHook.refs.pageNoInput} />
         <span className="mx">/</span>
-        <span className="mx"></span>
+        <span className="mx" ref={pdfViewerHook.refs.totalPages}></span>
         <button className="btn-icon ml" type="button" title="arrow right" onClick={renderNextPage}>
           <ArrowRight />
         </button>
       </div>
-      <div className="flex" ref={zoomControlRef}>
+      <div className="flex" ref={pdfViewerHook.refs.zoomControl}>
         <button className="btn-icon mr" type="button" title="minus" onClick={zoomOut}>
           <FaMinus />
         </button>
-        <span className="mx" ref={zoomLevelRef} style={{ minWidth: "20px", textAlign: "center" }}>
+        <span className="mx" ref={pdfViewerHook.refs.zoomLevel} style={{ minWidth: "20px", textAlign: "center" }}>
           {"ZOOM LEVEL"}
         </span>
         <button className="btn-icon ml" type="button" title="plus" onClick={zoomIn}>

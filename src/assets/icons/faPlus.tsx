@@ -1,4 +1,4 @@
-const FaPlus = () => {
+export const FaPlus = () => {
   return (
     <svg fill="none" version="1.1" xmlns="http://www.w3.org/2000/svg" width="10px" viewBox="0 0 45.402 45.402">
       <g>
@@ -12,5 +12,3 @@ const FaPlus = () => {
     </svg>
   );
 };
-
-export default FaPlus;
