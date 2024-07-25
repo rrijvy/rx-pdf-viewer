@@ -1,3 +1,20 @@
+:root {
+  --base-margin: 7px;
+  --base-padding: 7px;
+  --black: #00000;
+  --white: #ffffff;
+  --blur-800: #1b3f72;
+  --gray-50: #f4f5f6;
+  --gray-100: #edeef0;
+  --gray-200: #d4d5d8;
+  --gray-300: #c3c5c9;
+  --gray-400: #a9acb1;
+  --gray-500: #8b8e92;
+  --gray-600: #727579;
+  --gray-700: #616467;
+  --gray-800: #4c4e4f;
+}
+
 /* ---------------------------
       Scrollbar
 ---------------------------- */
@@ -23,93 +40,92 @@
       Backgound Colors
 ---------------------------- */
 .bg-Black {
-  background-color: #000000;
+  background-color: var(--black);
 }
 .bg-Blue800 {
-  background-color: #1b3f72;
+  background-color: var(--blur-800);
 }
 .bg-Gray50 {
-  background-color: #f4f5f6;
+  background-color: var(--gray-50);
 }
 .bg-Gray100 {
-  background-color: #edeef0;
+  background-color: var(--gray-100);
 }
 .bg-Gray200 {
-  background-color: #d4d5d8;
+  background-color: var(--gray-200);
 }
 .bg-Gray300 {
-  background-color: #c3c5c9;
+  background-color: var(--gray-300);
 }
 .bg-Gray400 {
-  background-color: #a9acb1;
+  background-color: var(--gray-400);
 }
 .bg-Gray500 {
-  background-color: #8b8e92;
+  background-color: var(--gray-500);
 }
 .bg-Gray600 {
-  background-color: #727579;
+  background-color: var(--gray-600);
 }
 .bg-Gray700 {
-  background-color: #616467;
+  background-color: var(--gray-700);
 }
 .bg-Gray800 {
-  background-color: #4c4e4f;
+  background-color: var(--gray-800);
 }
 
 /* ---------------------------
         Margins
 ---------------------------- */
 .m {
-  margin: 7px;
+  margin: var(--base-margin);
 }
 .mx {
-  margin: 0px 7px;
+  margin: 0px var(--base-margin);
 }
 .my {
-  margin: 7px 0px;
+  margin: var(--base-margin) 0px;
 }
 .ml {
-  margin-left: 7px;
+  margin-left: var(--base-margin);
 }
 .mr {
-  margin-right: 7px;
+  margin-right: var(--base-margin);
 }
 .mt {
-  margin-top: 7px;
+  margin-top: var(--base-margin);
 }
 .mb {
-  margin-bottom: 7px;
+  margin-bottom: var(--base-margin);
 }
 
 /* ---------------------------
         Paddings
 ---------------------------- */
 .p {
-  padding: 7px;
+  padding: var(--base-padding);
 }
 .px {
-  padding: 0px 7px;
+  padding: 0px var(--base-padding);
 }
 .py {
-  padding: 7px 0px;
+  padding: var(--base-padding) 0px;
 }
 .pl {
-  padding-left: 7px;
+  padding-left: var(--base-padding);
 }
 .pr {
-  padding-right: 7px;
+  padding-right: var(--base-padding);
 }
 .pt {
-  padding-top: 7px;
+  padding-top: var(--base-padding);
 }
 .pb {
-  padding-bottom: 7px;
+  padding-bottom: var(--base-padding);
 }
 
 /* ---------------------------
       Navigation Buttons
 ---------------------------- */
-
 .btn-icon {
   background-color: #ffffff;
   border: 1px solid #222222;
@@ -228,6 +244,7 @@ input[type="number"] {
   overflow: auto;
   padding: 7px 0px;
   background-color: #323639;
+  text-align: center;
 }
 
 .pdf-list-item {
@@ -239,8 +256,14 @@ input[type="number"] {
   border: 4px solid #1b3f72;
 }
 
+.pdf-list-item-page-number {
+  padding-bottom: 7px;
+}
+
 .pdf-viewer {
   position: relative;
   width: calc(100% - 300px);
   overflow: auto;
+  background-color: #616467;
+  text-align: center;
 }

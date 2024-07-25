@@ -1,9 +1,9 @@
 import "pdfjs-dist/web/pdf_viewer.css";
 import "../styles.css";
 import pdfjsLib from "../pdf";
+import ControlHelper, { RenderCallback } from "../helpers/controlHelpers";
 import { PDFDocumentProxy } from "pdfjs-dist";
 import { FC, useEffect, useRef, MouseEvent, FocusEvent } from "react";
-import ControlHelper, { RenderCallback } from "../helpers/controlHelpers";
 import { PdfViewerProps } from "../types";
 import { ArrowLeft, ArrowRight, FaMinus, FaPlus } from "../assets/icons";
 
@@ -211,7 +211,7 @@ const PdfViewer: FC<PdfViewerProps> = (props: PdfViewerProps) => {
       </div>
       <div className="pdf-viewer-wrapper">
         <div className="pdf-list-wrapper" ref={pdfPagesWrapper}></div>
-        <div className="pdf-viewer bg-Gray700" ref={pdfContainerRef}>
+        <div className="pdf-viewer" ref={pdfContainerRef}>
           <canvas ref={canvasRef} />
           <div ref={textLayeyRef} />
         </div>
